@@ -1,0 +1,8 @@
+income:
+  - id: 1
+    type: ACTUAL
+    category: "salary"
+    amount: 5000
+    used_date: '2025-1-1'
+    created_at: null
+    updated_at: null

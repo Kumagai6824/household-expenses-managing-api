@@ -2,7 +2,7 @@ package household_expenses_managing_api.com.demo.entity;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Income {
@@ -11,7 +11,7 @@ public class Income {
     private Type type;
     private String category;
     private BigDecimal amount;
-    private Date usedDate;
+    private LocalDate usedDate;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -20,6 +20,16 @@ public class Income {
     }
 
     public Income() {
+    }
+
+    public Income(int id, Type type, String category, BigDecimal amount, LocalDate usedDate, Timestamp createdAt, Timestamp updatedAt) {
+        this.id = id;
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.usedDate = usedDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -67,11 +77,11 @@ public class Income {
         this.amount = amount;
     }
 
-    public Date getUsedDate() {
+    public LocalDate getUsedDate() {
         return usedDate;
     }
 
-    public void setUsedDate(Date usedDate) {
+    public void setUsedDate(LocalDate usedDate) {
         this.usedDate = usedDate;
     }
 
