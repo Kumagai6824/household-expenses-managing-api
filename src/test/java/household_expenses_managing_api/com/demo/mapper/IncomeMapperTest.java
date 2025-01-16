@@ -17,8 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DBRider
-@DataSet(value = {"income.yml"}, executeScriptsBefore = {"reset-id.sql"}, cleanAfter = true, transactional = true)
 class IncomeMapperTest {
     @Autowired
     IncomeMapper incomeMapper;
@@ -30,7 +28,7 @@ class IncomeMapperTest {
         assertThat(incomes)
                 .hasSize(1)
                 .contains(
-                        new Income(1, Income.Type.ACTUAL, "salary", BigDecimal.valueOf(5000), LocalDate.of(2025, 1, 1), null, null)
+                        new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null)
                 );
     }
 }
