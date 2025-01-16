@@ -1,0 +1,9 @@
+cacheConnection: false
+cacheTableNames: false
+properties:
+  schema: expenses_manager_database
+  caseSensitiveTableNames: true
+connectionConfig:
+  url: "jdbc:mysql://localhost:3309/expenses_manager_database"
+  user: "user"
+  password: "password"
