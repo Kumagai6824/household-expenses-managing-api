@@ -4,9 +4,9 @@ DROP TABLE IF EXISTS expense;
 
 CREATE TABLE income (
   id int AUTO_INCREMENT,
-  type enum('projected', 'actual'),
+  type enum('PROJECTED', 'ACTUAL'),
   category VARCHAR(50) NOT NULL,
-  amount DECIMAL(10,2),
+  amount INT,
   used_date DATE,
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
@@ -17,9 +17,9 @@ INSERT INTO income (id, type, category, amount , used_date, created_at, updated_
 
 CREATE TABLE expense (
   id int AUTO_INCREMENT,
-  type enum('projected', 'actual'),
+  type enum('PROJECTED', 'ACTUAL'),
   category VARCHAR(50) NOT NULL,
-  amount DECIMAL(10,2),
+  amount INT,
   used_date DATE,
   created_at TIMESTAMP,
   updated_at TIMESTAMP,

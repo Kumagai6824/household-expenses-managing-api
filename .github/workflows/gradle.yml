@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3308/expenses_manager_database
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3309/expenses_manager_database
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     steps:
