@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DBRider
+@DataSet(value = "income.yml",executeScriptsBefore = "reset-id.sql", cleanAfter = true,transactional = true)
 class IncomeMapperTest {
     @Autowired
     IncomeMapper incomeMapper;
@@ -30,6 +31,14 @@ class IncomeMapperTest {
                 .contains(
                         new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null)
                 );
+    }
+
+    @Test
+    @DataSet(value = "empty-income.yml")
+    @Transactional
+    void incomeテーブルが空の時からで返ること(){
+        List<Income> incomes = incomeMapper.getAllIncome();
+        assertThat(incomes).isEmpty();
     }
 }
 
