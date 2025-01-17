@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,6 +40,17 @@ class IncomeMapperTest {
     void incomeテーブルが空の時からで返ること(){
         List<Income> incomes = incomeMapper.getAllIncome();
         assertThat(incomes).isEmpty();
+    }
+
+    @Test
+    @Transactional
+    void addIncomeでレコードが追加されること(){
+        Income income=new Income(Income.Type.PROJECTED,"bonus",100000,LocalDate.of(2025,1,1),null,null);
+        incomeMapper.addIncome(income);
+
+        int incomeId=income.getId();
+        assertNotNull(incomeId);
+        assertThat(incomeMapper.getAllIncome()).contains(income);
     }
 }
 
