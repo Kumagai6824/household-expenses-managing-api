@@ -30,4 +30,13 @@ class IncomeServiceImplTest {
         assertThat(actualIncome).isEqualTo(expectdIncome);
     }
 
+    @Test
+    public void addIncomeで登録できること(){
+        Income income=new Income(Income.Type.ACTUAL,"salary",5000, LocalDate.of(2024,1,10));
+
+        doNothing().when(incomeMapper).addIncome(income);
+        incomeServiceImpl.addIncome(income);
+        verify(incomeMapper,times(1)).addIncome(income);
+    }
+
 }

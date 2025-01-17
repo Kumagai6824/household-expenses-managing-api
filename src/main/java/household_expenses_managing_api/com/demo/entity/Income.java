@@ -45,6 +45,15 @@ public class Income {
         this.updatedAt = updatedAt;
     }
 
+    public Income(Type type, String category, int amount, LocalDate usedDate) {
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.usedDate = usedDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Income income)) return false;

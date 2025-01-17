@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IncomeService {
     List<Income> getAllIncome();
+
+    void addIncome(Income income);
 }
