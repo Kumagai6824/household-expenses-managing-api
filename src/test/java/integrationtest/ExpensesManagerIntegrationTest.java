@@ -34,17 +34,20 @@ public class ExpensesManagerIntegrationTest {
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         JSONAssert.assertEquals("""
-                [
-                    {
-                       "id":1,
-                       "type":"ACTUAL",
-                       "category":"salary",
-                       "amount":5000,
-                       "usedDate":"2024-01-10",
-                       "createdAt":null,
-                       "updatedAt":null
-                    }
-                ]
+                {
+                   "data":[
+                      {
+                         "id":1,
+                         "type":"ACTUAL",
+                         "category":"salary",
+                         "amount":5000,
+                         "usedDate":"2024-01-10",
+                         "createdAt":null,
+                         "updatedAt":null
+                      }
+                   ],
+                   "message":"Income records fetched successfully"
+                }
                 """,response, JSONCompareMode.STRICT);
     }
 }
