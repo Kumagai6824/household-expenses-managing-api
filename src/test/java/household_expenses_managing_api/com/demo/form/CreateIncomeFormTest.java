@@ -39,10 +39,10 @@ class CreateIncomeFormTest {
     public void categoryがnullのときバリデーションエラーとなること() {
         CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, null, 100, LocalDate.of(2025, 1, 1));
         Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
-        assertThat(violations).hasSize(1);
+        assertThat(violations).hasSize(2);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
-                .containsExactlyInAnyOrder(tuple("category", "null は許可されていません"));
+                .containsExactlyInAnyOrder(tuple("category", "null は許可されていません"), tuple("category", "空白は許可されていません"));
     }
 
     @Test
