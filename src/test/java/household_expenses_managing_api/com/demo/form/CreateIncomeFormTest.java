@@ -67,6 +67,14 @@ class CreateIncomeFormTest {
     }
 
     @Test
+    public void categoryが50文字のときバリデーションエラーとならないこと() {
+        String category = "Bonus";
+        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, category.repeat(10), 100, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        assertThat(violations).isEmpty();
+    }
+
+    @Test
     public void amountが0のときバリデーションエラーとなること() {
         CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, "Test income", 0, LocalDate.of(2025, 1, 1));
         Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
