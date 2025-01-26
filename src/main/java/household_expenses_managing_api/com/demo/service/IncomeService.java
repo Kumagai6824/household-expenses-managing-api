@@ -8,4 +8,6 @@ public interface IncomeService {
     List<Income> getAllIncome();
 
     void addIncome(Income income);
+
+    void updateIncome(Income income);
 }
