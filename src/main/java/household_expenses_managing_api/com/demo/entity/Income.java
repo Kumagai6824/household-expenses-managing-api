@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -46,6 +45,16 @@ public class Income {
     }
 
     public Income(Type type, String category, int amount, LocalDate usedDate) {
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.usedDate = usedDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Income(int id, Type type, String category, int amount, LocalDate usedDate) {
+        this.id = id;
         this.type = type;
         this.category = category;
         this.amount = amount;
