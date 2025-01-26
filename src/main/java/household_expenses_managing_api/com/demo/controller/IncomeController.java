@@ -39,8 +39,9 @@ public class IncomeController {
                 body(Map.of("message", "Income added successfully"));
     }
 
-    @PatchMapping("/income")
-    public ResponseEntity<Map<String, String>> updateIncome(@RequestBody @Validated UpdateIncomeForm form) throws Exception {
+    @PatchMapping("/income/{id}")
+    public ResponseEntity<Map<String, String>> updateIncome(@PathVariable int id, @RequestBody @Validated UpdateIncomeForm form) throws Exception {
+        form.setId(id);
         Income incomeEntity = form.convertToIncomeEntity();
         incomeService.updateIncome(incomeEntity);
         return ResponseEntity.ok(Map.of("message", "Income updated successfully"));
