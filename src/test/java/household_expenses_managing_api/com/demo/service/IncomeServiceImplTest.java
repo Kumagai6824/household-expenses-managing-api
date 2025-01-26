@@ -11,8 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class IncomeServiceImplTest {
@@ -22,21 +22,30 @@ class IncomeServiceImplTest {
     IncomeMapper incomeMapper;
 
     @Test
-    public void 全incomeを取得できること(){
-        List<Income> expectdIncome=List.of(new Income(1, Income.Type.ACTUAL,"salary",5000, LocalDate.of(2024,1,10),null,null));
+    public void 全incomeを取得できること() {
+        List<Income> expectdIncome = List.of(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
         doReturn(expectdIncome).when(incomeMapper).getAllIncome();
 
-        List<Income> actualIncome= incomeServiceImpl.getAllIncome();
+        List<Income> actualIncome = incomeServiceImpl.getAllIncome();
         assertThat(actualIncome).isEqualTo(expectdIncome);
     }
 
     @Test
-    public void addIncomeで登録できること(){
-        Income income=new Income(Income.Type.ACTUAL,"salary",5000, LocalDate.of(2024,1,10));
+    public void addIncomeで登録できること() {
+        Income income = new Income(Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10));
 
         doNothing().when(incomeMapper).addIncome(income);
         incomeServiceImpl.addIncome(income);
-        verify(incomeMapper,times(1)).addIncome(income);
+        verify(incomeMapper, times(1)).addIncome(income);
+    }
+
+    @Test
+    public void updateIncomeで更新できること() {
+        Income updateIncome = new Income(1, Income.Type.PROJECTED, "UpdatedSalary", 55555, LocalDate.of(2025, 10, 11), null, null);
+        doNothing().when(incomeMapper).updateIncome(updateIncome);
+        incomeServiceImpl.updateIncome(updateIncome);
+        verify(incomeMapper, times(1)).updateIncome(updateIncome);
+
     }
 
 }
