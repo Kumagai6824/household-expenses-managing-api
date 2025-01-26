@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DBRider
-@DataSet(value = "income.yml",executeScriptsBefore = "reset-id.sql", cleanAfter = true,transactional = true)
+@DataSet(value = "income.yml", executeScriptsBefore = "reset-id.sql", cleanAfter = true, transactional = true)
 class IncomeMapperTest {
     @Autowired
     IncomeMapper incomeMapper;
@@ -37,20 +37,27 @@ class IncomeMapperTest {
     @Test
     @DataSet(value = "empty-income.yml")
     @Transactional
-    void incomeテーブルが空の時からで返ること(){
+    void incomeテーブルが空の時からで返ること() {
         List<Income> incomes = incomeMapper.getAllIncome();
         assertThat(incomes).isEmpty();
     }
 
     @Test
     @Transactional
-    void addIncomeでレコードが追加されること(){
-        Income income=new Income(Income.Type.PROJECTED,"bonus",100000,LocalDate.of(2025,1,1),null,null);
+    void addIncomeでレコードが追加されること() {
+        Income income = new Income(Income.Type.PROJECTED, "bonus", 100000, LocalDate.of(2025, 1, 1), null, null);
         incomeMapper.addIncome(income);
 
-        int incomeId=income.getId();
+        int incomeId = income.getId();
         assertNotNull(incomeId);
         assertThat(incomeMapper.getAllIncome()).contains(income);
+    }
+
+    @Test
+    @Transactional
+    void updateIncomeでレコードが更新されること() {
+        incomeMapper.updateIncome(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10));
+        assertThat(incomeMapper.getAllIncome()).contains(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
     }
 }
 
