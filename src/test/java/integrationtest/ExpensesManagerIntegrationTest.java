@@ -3,6 +3,7 @@ package integrationtest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
 import household_expenses_managing_api.com.demo.DemoApplication;
 import household_expenses_managing_api.com.demo.entity.Income;
@@ -62,7 +63,7 @@ public class ExpensesManagerIntegrationTest {
         Income requestIncome = new Income(Income.Type.PROJECTED, "Salary", 10000, LocalDate.of(2025, 1, 10));
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        
+
         String requestJson = objectMapper.writeValueAsString(requestIncome);
         String response = mockMvc.perform(MockMvcRequestBuilders.post("/income")
                         .content(requestJson).contentType(MediaType.APPLICATION_JSON))
@@ -74,5 +75,28 @@ public class ExpensesManagerIntegrationTest {
                     "message":"Income added successfully"
                 }
                 """, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @ExpectedDataSet(value = {"/expecteddataset/expectedUpdatedIncome.yml"}, ignoreCols = {"updated_at"})
+    @Transactional
+    void updateIncomeで更新できること() throws Exception {
+        Income requestIncome = new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 11), null, null);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String requestJson = objectMapper.writeValueAsString(requestIncome);
+        String response = mockMvc.perform(MockMvcRequestBuilders.patch("/income")
+                        .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        JSONAssert.assertEquals("""
+                        {
+                            "message":"Income updated successfully"
+                        }
+                        """
+                , response, JSONCompareMode.STRICT);
+
     }
 }
