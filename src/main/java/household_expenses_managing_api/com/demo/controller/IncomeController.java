@@ -2,14 +2,12 @@ package household_expenses_managing_api.com.demo.controller;
 
 import household_expenses_managing_api.com.demo.entity.Income;
 import household_expenses_managing_api.com.demo.form.CreateIncomeForm;
+import household_expenses_managing_api.com.demo.form.UpdateIncomeForm;
 import household_expenses_managing_api.com.demo.response.ApiResponse;
 import household_expenses_managing_api.com.demo.service.IncomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -39,6 +37,13 @@ public class IncomeController {
         URI url = uriComponentsBuilder.path("/income" + id).build().toUri();
         return ResponseEntity.created(url).
                 body(Map.of("message", "Income added successfully"));
+    }
+
+    @PatchMapping("/income")
+    public ResponseEntity<Map<String, String>> updateIncome(@RequestBody @Validated UpdateIncomeForm form) throws Exception {
+        Income incomeEntity = form.convertToIncomeEntity();
+        incomeService.updateIncome(incomeEntity);
+        return ResponseEntity.ok(Map.of("message", "Income updated successfully"));
     }
 }
 

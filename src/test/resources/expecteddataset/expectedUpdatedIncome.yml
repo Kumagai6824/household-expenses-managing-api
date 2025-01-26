@@ -1,0 +1,8 @@
+income:
+  - id: 1
+    type: PROJECTED
+    category: "Updated salary"
+    amount: 55555
+    used_date: '2025-10-11'
+    created_at: null
+    updated_at: null
