@@ -15,7 +15,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-class CreateIncomeFormTest {
+class UpdateIncomeFormTest {
     private static Validator validator;
 
     @BeforeAll
@@ -27,8 +27,8 @@ class CreateIncomeFormTest {
 
     @Test
     public void typeがnullのときバリデーションエラーとなること() {
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(null, "Test income", 100, LocalDate.of(2025, 1, 1));
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, null, "Test income", 100, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).hasSize(1);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
@@ -37,8 +37,8 @@ class CreateIncomeFormTest {
 
     @Test
     public void categoryがnullのときバリデーションエラーとなること() {
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, null, 100, LocalDate.of(2025, 1, 1));
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, Income.Type.ACTUAL, null, 100, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).hasSize(2);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
@@ -47,8 +47,8 @@ class CreateIncomeFormTest {
 
     @Test
     public void categoryが空のときバリデーションエラーとなること() {
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, "", 100, LocalDate.of(2025, 1, 1));
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, Income.Type.ACTUAL, "", 100, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).hasSize(1);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
@@ -58,8 +58,8 @@ class CreateIncomeFormTest {
     @Test
     public void categoryが51文字以上のときバリデーションエラーとなること() {
         String category = "Bonus";
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, category.repeat(10) + "1", 100, LocalDate.of(2025, 1, 1));
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, Income.Type.ACTUAL, category.repeat(10) + "1", 100, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).hasSize(1);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
@@ -69,15 +69,15 @@ class CreateIncomeFormTest {
     @Test
     public void categoryが50文字のときバリデーションエラーとならないこと() {
         String category = "Bonus";
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, category.repeat(10), 100, LocalDate.of(2025, 1, 1));
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, Income.Type.ACTUAL, category.repeat(10), 100, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).isEmpty();
     }
 
     @Test
     public void amountが0のときバリデーションエラーとなること() {
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, "Test income", 0, LocalDate.of(2025, 1, 1));
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, Income.Type.ACTUAL, "Test income", 0, LocalDate.of(2025, 1, 1));
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).hasSize(1);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
@@ -86,8 +86,8 @@ class CreateIncomeFormTest {
 
     @Test
     public void usedDateがnullのときバリデーションエラーとなること() {
-        CreateIncomeForm createIncomeForm = new CreateIncomeForm(Income.Type.ACTUAL, "Test income", 100, null);
-        Set<ConstraintViolation<CreateIncomeForm>> violations = validator.validate(createIncomeForm);
+        UpdateIncomeForm updateIncomeForm = new UpdateIncomeForm(1, Income.Type.ACTUAL, "Test income", 100, null);
+        Set<ConstraintViolation<UpdateIncomeForm>> violations = validator.validate(updateIncomeForm);
         assertThat(violations).hasSize(1);
         assertThat(violations)
                 .extracting(violation -> violation.getPropertyPath().toString(), ConstraintViolation::getMessage)
