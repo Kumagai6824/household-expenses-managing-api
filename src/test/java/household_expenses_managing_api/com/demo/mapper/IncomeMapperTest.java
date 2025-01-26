@@ -56,7 +56,7 @@ class IncomeMapperTest {
     @Test
     @Transactional
     void updateIncomeでレコードが更新されること() {
-        incomeMapper.updateIncome(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10));
+        incomeMapper.updateIncome(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
         assertThat(incomeMapper.getAllIncome()).contains(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
     }
 }
