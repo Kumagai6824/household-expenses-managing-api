@@ -11,7 +11,6 @@ import java.time.LocalDate;
 
 @Getter
 public class UpdateIncomeForm {
-    @NotNull
     private int id;
 
     @NotNull
@@ -30,6 +29,10 @@ public class UpdateIncomeForm {
 
     public enum Type {
         PROJECTED, ACTUAL;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public UpdateIncomeForm(int id, Income.Type type, String category, int amount, LocalDate usedDate) {
