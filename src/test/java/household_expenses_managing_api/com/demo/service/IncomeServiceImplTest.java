@@ -87,4 +87,23 @@ class IncomeServiceImplTest {
                 .hasMessage("Income ID:" + id + "doesn't exist");
     }
 
+    @Test
+    public void deleteIncomeで削除できること() {
+        int id = 1;
+        Optional<Income> income = Optional.of(new Income(id, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+        doReturn(income).when(incomeMapper).getIncomeById(id);
+        doNothing().when(incomeMapper).deleteIncome(id);
+        incomeServiceImpl.deleteIncome(id);
+        verify(incomeMapper, times(1)).deleteIncome(id);
+    }
+
+    @Test
+    public void deleteIncomeで存在しないidのとき例外を返すこと() {
+        int id = 0;
+        doReturn(Optional.empty()).when(incomeMapper).getIncomeById(id);
+        assertThatThrownBy(() -> incomeServiceImpl.deleteIncome(id))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Income ID:" + id + "doesn't exist");
+    }
+
 }
