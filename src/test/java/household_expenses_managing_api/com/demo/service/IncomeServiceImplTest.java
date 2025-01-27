@@ -64,7 +64,7 @@ class IncomeServiceImplTest {
 
         assertThatThrownBy(() -> incomeServiceImpl.updateIncome(updateIncome))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("Income ID:" + id + "doesn't exist");
+                .hasMessage("Income ID: " + id + " doesn't exist");
 
     }
 
@@ -84,7 +84,7 @@ class IncomeServiceImplTest {
         doReturn(Optional.empty()).when(incomeMapper).getIncomeById(id);
         assertThatThrownBy(() -> incomeServiceImpl.getIncomeById(id))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("Income ID:" + id + "doesn't exist");
+                .hasMessage("Income ID: " + id + " doesn't exist");
     }
 
     @Test
@@ -103,7 +103,7 @@ class IncomeServiceImplTest {
         doReturn(Optional.empty()).when(incomeMapper).getIncomeById(id);
         assertThatThrownBy(() -> incomeServiceImpl.deleteIncome(id))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("Income ID:" + id + "doesn't exist");
+                .hasMessage("Income ID: " + id + " doesn't exist");
     }
 
 }

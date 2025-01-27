@@ -35,7 +35,7 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public void updateIncome(Income income) {
         int id = income.getId();
-        incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID:" + id + "doesn't exist"));
+        incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID: " + id + " doesn't exist"));
 
         Timestamp now = Timestamp.from(Instant.now());
         income.setUpdatedAt(now);
@@ -46,14 +46,14 @@ public class IncomeServiceImpl implements IncomeService {
     public Income getIncomeById(int id) {
         Optional<Income> incomeOptional = incomeMapper.getIncomeById(id);
 
-        Income income = incomeOptional.orElseThrow(() -> new ResourceNotFoundException("Income ID:" + id + "doesn't exist"));
+        Income income = incomeOptional.orElseThrow(() -> new ResourceNotFoundException("Income ID: " + id + " doesn't exist"));
 
         return income;
     }
 
     @Override
     public void deleteIncome(int id) {
-        incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID:" + id + "doesn't exist"));
+        incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID: " + id + " doesn't exist"));
         incomeMapper.deleteIncome(id);
     }
 }
