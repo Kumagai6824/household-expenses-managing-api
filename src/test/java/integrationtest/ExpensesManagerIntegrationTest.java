@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
+import com.jayway.jsonpath.JsonPath;
 import household_expenses_managing_api.com.demo.DemoApplication;
 import household_expenses_managing_api.com.demo.entity.Income;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = DemoApplication.class)
 @AutoConfigureMockMvc
@@ -85,7 +88,7 @@ public class ExpensesManagerIntegrationTest {
         Income requestIncome = new Income(Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 11), null, null);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        
+
         int id = 1;
 
         String requestJson = objectMapper.writeValueAsString(requestIncome);
@@ -102,4 +105,42 @@ public class ExpensesManagerIntegrationTest {
                 , response, JSONCompareMode.STRICT);
 
     }
+
+    @Test
+    @Transactional
+    void getIncomeByIdで該当のincomeを取得できること() throws Exception {
+        int id = 1;
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/income/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        JSONAssert.assertEquals("""
+                {
+                   "data":{
+                      "id":1,
+                      "type":"ACTUAL",
+                      "category":"salary",
+                      "amount":5000,
+                      "usedDate":"2024-01-10",
+                      "createdAt":null,
+                      "updatedAt":null
+                   },
+                   "message":"Income record fetched successfully"
+                }
+                """, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @Transactional
+    void getIncomeByIdで存在しないidのとき例外を返すこと() throws Exception {
+        int id = 0;
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/income/" + id))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        assertEquals("/income/" + id, JsonPath.read(response, "$.path"));
+        assertEquals("Not Found", JsonPath.read(response, "$.error"));
+        assertEquals("Income ID:" + id + "doesn't exist", JsonPath.read(response, "$.message"));
+    }
+
 }
