@@ -75,5 +75,21 @@ class IncomeMapperTest {
         Optional<Income> income = incomeMapper.getIncomeById(100);
         assertThat(income).isEmpty();
     }
+
+    @Test
+    @Transactional
+    void deleteIncomeでレコードが削除されること() {
+        int id = 1;
+        incomeMapper.deleteIncome(id);
+        assertThat(incomeMapper.getIncomeById(id)).isEmpty();
+    }
+
+    @Test
+    @Transactional
+    void deleteIncomeで存在しないidのとき何も変更されないこと() {
+        int id = 0;
+        incomeMapper.deleteIncome(id);
+        assertThat(incomeMapper.getAllIncome()).contains(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+    }
 }
 

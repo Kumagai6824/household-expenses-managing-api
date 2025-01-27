@@ -20,4 +20,7 @@ public interface IncomeMapper {
 
     @Select("SELECT * FROM income WHERE id = #{id}")
     Optional<Income> getIncomeById(int id);
+
+    @Delete("DELETE FROM income WHERE id = #{id}")
+    void deleteIncome(int id);
 }
