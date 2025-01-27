@@ -44,10 +44,27 @@ class IncomeServiceImplTest {
 
     @Test
     public void updateIncomeで更新できること() {
-        Income updateIncome = new Income(1, Income.Type.PROJECTED, "UpdatedSalary", 55555, LocalDate.of(2025, 10, 11), null, null);
+        int id = 1;
+        Optional<Income> income = Optional.of(new Income(id, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+        Income updateIncome = new Income(id, Income.Type.PROJECTED, "UpdatedSalary", 55555, LocalDate.of(2025, 10, 11), null, null);
+
+        doReturn(income).when(incomeMapper).getIncomeById(id);
         doNothing().when(incomeMapper).updateIncome(updateIncome);
+
         incomeServiceImpl.updateIncome(updateIncome);
         verify(incomeMapper, times(1)).updateIncome(updateIncome);
+
+    }
+
+    @Test
+    public void updateIncomeで存在しないidのとき例外を返すこと() {
+        int id = 0;
+        Income updateIncome = new Income(id, Income.Type.PROJECTED, "UpdatedSalary", 55555, LocalDate.of(2025, 10, 11), null, null);
+        doReturn(Optional.empty()).when(incomeMapper).getIncomeById(id);
+
+        assertThatThrownBy(() -> incomeServiceImpl.updateIncome(updateIncome))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Income ID:" + id + "doesn't exist");
 
     }
 

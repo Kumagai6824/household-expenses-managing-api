@@ -34,9 +34,11 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     public void updateIncome(Income income) {
+        int id = income.getId();
+        incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID:" + id + "doesn't exist"));
+
         Timestamp now = Timestamp.from(Instant.now());
         income.setUpdatedAt(now);
-
         incomeMapper.updateIncome(income);
     }
 
