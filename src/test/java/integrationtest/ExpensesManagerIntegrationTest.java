@@ -123,7 +123,7 @@ public class ExpensesManagerIntegrationTest {
 
         assertEquals("/income/" + id, JsonPath.read(response, "$.path"));
         assertEquals("Not Found", JsonPath.read(response, "$.error"));
-        assertEquals("Income ID:" + id + "doesn't exist", JsonPath.read(response, "$.message"));
+        assertEquals("Income ID: " + id + " doesn't exist", JsonPath.read(response, "$.message"));
     }
 
     @Test
@@ -160,7 +160,7 @@ public class ExpensesManagerIntegrationTest {
 
         assertEquals("/income/" + id, JsonPath.read(response, "$.path"));
         assertEquals("Not Found", JsonPath.read(response, "$.error"));
-        assertEquals("Income ID:" + id + "doesn't exist", JsonPath.read(response, "$.message"));
+        assertEquals("Income ID: " + id + " doesn't exist", JsonPath.read(response, "$.message"));
     }
 
 }
