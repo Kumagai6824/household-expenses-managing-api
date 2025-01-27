@@ -1,6 +1,7 @@
 package household_expenses_managing_api.com.demo.service;
 
 import household_expenses_managing_api.com.demo.entity.Income;
+import household_expenses_managing_api.com.demo.exception.ResourceNotFoundException;
 import household_expenses_managing_api.com.demo.mapper.IncomeMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,8 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,6 +49,25 @@ class IncomeServiceImplTest {
         incomeServiceImpl.updateIncome(updateIncome);
         verify(incomeMapper, times(1)).updateIncome(updateIncome);
 
+    }
+
+    @Test
+    public void getIncomeByIdで該当incomeを取得できること() {
+        int id = 1;
+        Optional<Income> income = Optional.of(new Income(id, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+        doReturn(income).when(incomeMapper).getIncomeById(id);
+
+        Income actualIncome = incomeServiceImpl.getIncomeById(id);
+        verify(incomeMapper, times(1)).getIncomeById(id);
+    }
+
+    @Test
+    public void getIncomeByIdで存在しないid指定時に例外を返すこと() {
+        int id = 0;
+        doReturn(Optional.empty()).when(incomeMapper).getIncomeById(id);
+        assertThatThrownBy(() -> incomeServiceImpl.getIncomeById(id))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Income ID:" + id + "doesn't exist");
     }
 
 }
