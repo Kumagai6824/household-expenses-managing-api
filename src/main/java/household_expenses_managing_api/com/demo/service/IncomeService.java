@@ -10,4 +10,6 @@ public interface IncomeService {
     void addIncome(Income income);
 
     void updateIncome(Income income);
+
+    Income getIncomeById(int id);
 }
