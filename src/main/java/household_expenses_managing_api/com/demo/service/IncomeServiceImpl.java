@@ -50,4 +50,10 @@ public class IncomeServiceImpl implements IncomeService {
 
         return income;
     }
+
+    @Override
+    public void deleteIncome(int id) {
+        incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID:" + id + "doesn't exist"));
+        incomeMapper.deleteIncome(id);
+    }
 }
