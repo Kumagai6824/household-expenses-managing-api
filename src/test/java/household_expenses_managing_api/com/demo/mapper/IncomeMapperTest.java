@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,6 +59,21 @@ class IncomeMapperTest {
     void updateIncomeでレコードが更新されること() {
         incomeMapper.updateIncome(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
         assertThat(incomeMapper.getAllIncome()).contains(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
+    }
+
+    @Test
+    @Transactional
+    void getIncomeByIdで該当incomeが取得できること() {
+        Optional<Income> income = incomeMapper.getIncomeById(1);
+        assertThat(income)
+                .contains(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+    }
+
+    @Test
+    @Transactional
+    void getIncomeByIdで存在しないidのとき空が取得されること() {
+        Optional<Income> income = incomeMapper.getIncomeById(100);
+        assertThat(income).isEmpty();
     }
 }
 
