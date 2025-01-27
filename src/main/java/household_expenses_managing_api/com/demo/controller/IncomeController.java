@@ -46,6 +46,12 @@ public class IncomeController {
         incomeService.updateIncome(incomeEntity);
         return ResponseEntity.ok(Map.of("message", "Income updated successfully"));
     }
+
+    @GetMapping("/income/{id}")
+    public ApiResponse<Income> getIncomeById(@PathVariable int id) {
+        Income income = incomeService.getIncomeById(id);
+        return new ApiResponse<>(income, "Income record fetched successfully");
+    }
 }
 
 
