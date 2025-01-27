@@ -52,6 +52,18 @@ class IncomeServiceImplTest {
     }
 
     @Test
+    public void updateIncomeで存在しないidのとき例外を返すこと() {
+        int id = 0;
+        Income updateIncome = new Income(id, Income.Type.PROJECTED, "UpdatedSalary", 55555, LocalDate.of(2025, 10, 11), null, null);
+        doReturn(Optional.empty()).when(incomeMapper).getIncomeById(id);
+        
+        assertThatThrownBy(() -> incomeServiceImpl.updateIncome(updateIncome))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Income ID:" + id + "doesn't exist");
+
+    }
+
+    @Test
     public void getIncomeByIdで該当incomeを取得できること() {
         int id = 1;
         Optional<Income> income = Optional.of(new Income(id, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
