@@ -5,30 +5,39 @@ const mockExpenses = [];
 // Function to render income table
 async function renderIncomeTable() {
   const tableBody = document.querySelector("#income-table tbody");
-  tableBody.innerHTML = "";
+  tableBody.innerHTML = ""; // Clear the table first
 
   try {
+    // Fetch income data from the backend
     const response = await fetch("http://localhost:8080/income");
     if (!response.ok) {
-      throw new Error("HTTP error! Status: ${response.status}");
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const incomeData = await response.json();
 
+    const responseData = await response.json();
+    console.log("Response data:", responseData); // Debug the raw response
+
+    // Check if the response is an array or wrapped in an object
+    const incomeData = Array.isArray(responseData)
+      ? responseData
+      : responseData.data;
+
+    // Populate the table with backend data
     incomeData.forEach((income) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-      <td>${income.type}</td>
-      <td>${income.category}</td>
-      <td>${income.amount}</td>
-      <td>${income.usedDate}</td>
-      <td>
-        <button onclick="deleteIncome(${income.id})">Delete</button>
-      </td>
-    `;
+        <td>${income.type}</td>
+        <td>${income.category}</td>
+        <td>${income.amount}</td>
+        <td>${income.usedDate}</td>
+        <td>
+          <button onclick="deleteIncome(${income.id})">Delete</button>
+        </td>
+      `;
       tableBody.appendChild(row);
     });
   } catch (error) {
-    console.error("Error fetching income data: ", error);
+    console.error("Error fetching income data:", error);
     tableBody.innerHTML = '<tr><td colspan="5">Failed to load data.</td></tr>';
   }
 }
