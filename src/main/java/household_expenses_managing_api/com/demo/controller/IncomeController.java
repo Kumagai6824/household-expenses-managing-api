@@ -52,6 +52,12 @@ public class IncomeController {
         Income income = incomeService.getIncomeById(id);
         return new ApiResponse<>(income, "Income record fetched successfully");
     }
+
+    @DeleteMapping("/income/{id}")
+    public ResponseEntity<Map<String, String>> deleteIncome(@PathVariable int id) throws Exception {
+        incomeService.deleteIncome(id);
+        return ResponseEntity.ok(Map.of("message", "Income deleted successfully"));
+    }
 }
 
 

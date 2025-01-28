@@ -163,4 +163,33 @@ public class ExpensesManagerIntegrationTest {
         assertEquals("Income ID: " + id + " doesn't exist", JsonPath.read(response, "$.message"));
     }
 
+    @Test
+    @Transactional
+    void deleteIncomeで削除できること() throws Exception {
+        int id = 1;
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/income/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        JSONAssert.assertEquals("""
+                        {
+                            "message":"Income deleted successfully"
+                        }
+                        """
+                , response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @Transactional
+    void deleteIncomeで存在しないidのとき例外を返すこと() throws Exception {
+        int id = 0;
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/income/" + id))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        assertEquals("/income/" + id, JsonPath.read(response, "$.path"));
+        assertEquals("Not Found", JsonPath.read(response, "$.error"));
+        assertEquals("Income ID: " + id + " doesn't exist", JsonPath.read(response, "$.message"));
+    }
+
 }
