@@ -2,7 +2,7 @@ package household_expenses_managing_api.com.demo.mapper;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
-import household_expenses_managing_api.com.demo.entity.Income;
+import household_expenses_managing_api.com.demo.entity.Expense;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,77 +19,77 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DBRider
-@DataSet(value = "income.yml", executeScriptsBefore = "reset-id.sql", cleanAfter = true, transactional = true)
-class IncomeMapperTest {
+@DataSet(value = "expense.yml", executeScriptsBefore = "reset-id.sql", cleanAfter = true, transactional = true)
+class ExpenseMapperTest {
     @Autowired
-    IncomeMapper incomeMapper;
+    ExpenseMapper expenseMapper;
 
     @Test
     @Transactional
-    void 全incomeが取得できること() {
-        List<Income> incomes = incomeMapper.getAllIncome();
-        assertThat(incomes)
+    void 全expenseが取得できること() {
+        List<Expense> expenses = expenseMapper.getAllExpense();
+        assertThat(expenses)
                 .hasSize(1)
                 .contains(
-                        new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null)
+                        new Expense(1, Expense.Type.ACTUAL, "food", 7000, LocalDate.of(2025, 1, 10), null, null)
                 );
     }
 
     @Test
-    @DataSet(value = "empty-income.yml")
+    @DataSet(value = "empty-expense.yml")
     @Transactional
-    void incomeテーブルが空の時からで返ること() {
-        List<Income> incomes = incomeMapper.getAllIncome();
-        assertThat(incomes).isEmpty();
+    void expenseテーブルが空の時からで返ること() {
+        List<Expense> expenses = expenseMapper.getAllExpense();
+        assertThat(expenses).isEmpty();
     }
 
     @Test
     @Transactional
-    void addIncomeでレコードが追加されること() {
-        Income income = new Income(Income.Type.PROJECTED, "bonus", 100000, LocalDate.of(2025, 1, 1), null, null);
-        incomeMapper.addIncome(income);
+    void addExpenseでレコードが追加されること() {
+        Expense expense = new Expense(Expense.Type.PROJECTED, "Rent", 70000, LocalDate.of(2025, 1, 1), null, null);
+        expenseMapper.addExpense(expense);
 
-        int incomeId = income.getId();
-        assertNotNull(incomeId);
-        assertThat(incomeMapper.getAllIncome()).contains(income);
+        int expenseId = expense.getId();
+        assertNotNull(expenseId);
+        assertThat(expenseMapper.getAllExpense()).contains(expense);
     }
 
     @Test
     @Transactional
-    void updateIncomeでレコードが更新されること() {
-        incomeMapper.updateIncome(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
-        assertThat(incomeMapper.getAllIncome()).contains(new Income(1, Income.Type.PROJECTED, "Updated salary", 55555, LocalDate.of(2025, 10, 10), null, null));
+    void updateExpenseでレコードが更新されること() {
+        expenseMapper.updateExpense(new Expense(1, Expense.Type.PROJECTED, "Updated food", 8000, LocalDate.of(2025, 10, 10), null, null));
+        assertThat(expenseMapper.getAllExpense()).contains(new Expense(1, Expense.Type.PROJECTED, "Updated food", 8000, LocalDate.of(2025, 10, 10), null, null));
     }
 
     @Test
     @Transactional
-    void getIncomeByIdで該当incomeが取得できること() {
-        Optional<Income> income = incomeMapper.getIncomeById(1);
-        assertThat(income)
-                .contains(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+    void getExpenseByIdで該当expenseが取得できること() {
+        Optional<Expense> expense = expenseMapper.getExpenseById(1);
+        assertThat(expense)
+                .contains(new Expense(1, Expense.Type.ACTUAL, "food", 7000, LocalDate.of(2025, 1, 10), null, null));
     }
 
     @Test
     @Transactional
-    void getIncomeByIdで存在しないidのとき空が取得されること() {
-        Optional<Income> income = incomeMapper.getIncomeById(100);
-        assertThat(income).isEmpty();
+    void getExpenseByIdで存在しないidのとき空が取得されること() {
+        Optional<Expense> expense = expenseMapper.getExpenseById(100);
+        assertThat(expense).isEmpty();
     }
 
     @Test
     @Transactional
-    void deleteIncomeでレコードが削除されること() {
+    void deleteExpenseでレコードが削除されること() {
         int id = 1;
-        incomeMapper.deleteIncome(id);
-        assertThat(incomeMapper.getIncomeById(id)).isEmpty();
+        expenseMapper.deleteExpense(id);
+        assertThat(expenseMapper.getExpenseById(id)).isEmpty();
     }
 
     @Test
     @Transactional
-    void deleteIncomeで存在しないidのとき何も変更されないこと() {
+    void deleteExpenseで存在しないidのとき何も変更されないこと() {
         int id = 0;
-        incomeMapper.deleteIncome(id);
-        assertThat(incomeMapper.getAllIncome()).contains(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null));
+        expenseMapper.deleteExpense(id);
+        assertThat(expenseMapper.getAllExpense()).contains(new Expense(1, Expense.Type.ACTUAL, "food", 7000, LocalDate.of(2025, 1, 10), null, null));
     }
 }
 
