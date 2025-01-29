@@ -102,13 +102,30 @@ document
     const type = document.querySelector("#income-type").value;
     const category = document.querySelector("#income-category").value;
     const amount = parseFloat(document.querySelector("#income-amount").value);
-    const date = document.querySelector("#income-date").value;
+    const usedDate = document.querySelector("#income-date").value;
 
-    if (type && category && amount && date) {
-      mockIncome.push({ type, category, amount, date });
-      renderIncomeTable();
-      renderSummary();
-      this.reset();
+    if (type && category && amount && usedDate) {
+      const newIncome = { type, category, amount, usedDate };
+      try {
+        const response = await fetch("http://localhost:8080/income", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newIncome),
+        });
+
+        if (!response.ok) {
+          throw new Error("HTTP error! Status: ${response.status}");
+        }
+
+        console.log("Income added successfully");
+        await renderIncomeTable();
+        this.reset();
+      } catch (error) {
+        console.error("Error adding income: ", error);
+        alert("Failed to add income!");
+      }
     } else {
       alert("Please fill out all fields!");
     }
