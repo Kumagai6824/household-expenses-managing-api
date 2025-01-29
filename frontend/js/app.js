@@ -43,23 +43,39 @@ async function renderIncomeTable() {
 }
 
 // Function to render expense table
-function renderExpenseTable() {
+async function renderExpenseTable() {
   const tableBody = document.querySelector("#expense-table tbody");
   tableBody.innerHTML = "";
 
-  mockExpenses.forEach((expense, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
+  try {
+    const response = await fetch("http://localhost:8080/expense");
+    if (!response.ok) {
+      throw new Error("HTTP error! Status:" + response.status);
+    }
+    const responseData = await response.json();
+    console.log("Response data:", responseData);
+
+    const expenseData = Array.isArray(responseData)
+      ? responseData
+      : responseData.data;
+
+    expenseData.forEach((expense) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
       <td>${expense.type}</td>
       <td>${expense.category}</td>
       <td>${expense.amount}</td>
-      <td>${expense.date}</td>
+      <td>${expense.usedDate}</td>
       <td>
-        <button onclick="deleteExpense(${index})">Delete</button>
+        <button onclick="deleteExpense(${expense.id})">Delete</button>
       </td>
     `;
-    tableBody.appendChild(row);
-  });
+      tableBody.appendChild(row);
+    });
+  } catch (error) {
+    console.error("Error fetching expense data:" + error);
+    tableBody.innerHTML = '<tr><td colspan="5">Failed to load data.</td></tr>';
+  }
 }
 
 // Function to calculate and render budget summary
