@@ -152,10 +152,27 @@ document
   });
 
 // Delete Income
-function deleteIncome(index) {
-  mockIncome.splice(index, 1);
-  renderIncomeTable();
-  renderSummary();
+async function deleteIncome(id) {
+  if (!confirm("Are you sure you want to delete income ID " + id + "?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/income/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP error! Status:" + response.status);
+    }
+
+    console.log("Income ID " + id + " deleted successfully");
+
+    await renderIncomeTable();
+  } catch (error) {
+    console.error("Error deleting income:", error);
+    alert("Failed to delete income!");
+  }
 }
 
 // Delete Expense
