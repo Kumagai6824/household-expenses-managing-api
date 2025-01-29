@@ -63,35 +63,58 @@ function renderExpenseTable() {
 }
 
 // Function to calculate and render budget summary
-function renderSummary() {
-  const totalProjectedIncome = mockIncome
-    .filter((item) => item.type === "projected")
-    .reduce((sum, item) => sum + item.amount, 0);
-  const totalActualIncome = mockIncome
-    .filter((item) => item.type === "actual")
-    .reduce((sum, item) => sum + item.amount, 0);
-  const totalProjectedExpenses = mockExpenses
-    .filter((item) => item.type === "projected")
-    .reduce((sum, item) => sum + item.amount, 0);
-  const totalActualExpenses = mockExpenses
-    .filter((item) => item.type === "actual")
-    .reduce((sum, item) => sum + item.amount, 0);
+async function renderSummary() {
+  try {
+    const response = await fetch("http://localhost:8080/income");
+    if (!response.ok) {
+      throw new Error("HTTP error! Status:" + response.status);
+    }
 
-  const tableBody = document.querySelector("#summary-table tbody");
-  tableBody.innerHTML = `
-    <tr>
-      <td>Projected</td>
-      <td>${totalProjectedIncome}</td>
-      <td>${totalProjectedExpenses}</td>
-      <td>${totalProjectedIncome - totalProjectedExpenses}</td>
-    </tr>
-    <tr>
-      <td>Actual</td>
-      <td>${totalActualIncome}</td>
-      <td>${totalActualExpenses}</td>
-      <td>${totalActualIncome - totalActualExpenses}</td>
-    </tr>
-  `;
+    const responseData = await response.json();
+    console.log("Response data from backend:", responseData);
+
+    const incomeData = Array.isArray(responseData)
+      ? responseData
+      : responseData.data;
+
+    if (!Array.isArray(incomeData)) {
+      throw new Error("Invalid data format: Expected an array");
+    }
+
+    const totalProjectedIncome = incomeData
+      .filter((item) => item.type.toLowerCase() === "projected")
+      .reduce((sum, item) => sum + item.amount, 0);
+    const totalActualIncome = incomeData
+      .filter((item) => item.type.toLowerCase() === "actual")
+      .reduce((sum, item) => sum + item.amount, 0);
+    const totalProjectedExpenses = mockExpenses
+      .filter((item) => item.type === "projected")
+      .reduce((sum, item) => sum + item.amount, 0);
+    const totalActualExpenses = mockExpenses
+      .filter((item) => item.type === "actual")
+      .reduce((sum, item) => sum + item.amount, 0);
+
+    const tableBody = document.querySelector("#summary-table tbody");
+    tableBody.innerHTML = `
+      <tr>
+        <td>Projected</td>
+        <td>${totalProjectedIncome}</td>
+        <td>${totalProjectedExpenses}</td>
+        <td>${totalProjectedIncome - totalProjectedExpenses}</td>
+      </tr>
+      <tr>
+        <td>Actual</td>
+        <td>${totalActualIncome}</td>
+        <td>${totalActualExpenses}</td>
+        <td>${totalActualIncome - totalActualExpenses}</td>
+      </tr>
+    `;
+  } catch (error) {
+    console.error("Error fetching summary data:", error);
+    const tableBody = document.querySelector("#summary-table tbody");
+    tableBody.innerHTML =
+      '<tr><td colspan="2">Failed to load summary.</td></tr>';
+  }
 }
 
 // Add Income
@@ -121,6 +144,7 @@ document
 
         console.log("Income added successfully");
         await renderIncomeTable();
+        await renderSummary();
         this.reset();
       } catch (error) {
         console.error("Error adding income: ", error);
@@ -169,6 +193,7 @@ async function deleteIncome(id) {
     console.log("Income ID " + id + " deleted successfully");
 
     await renderIncomeTable();
+    await renderSummary();
   } catch (error) {
     console.error("Error deleting income:", error);
     alert("Failed to delete income!");
