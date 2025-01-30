@@ -192,4 +192,39 @@ public class ExpensesManagerIntegrationTest {
         assertEquals("Income ID: " + id + " doesn't exist", JsonPath.read(response, "$.message"));
     }
 
+    @Test
+    @Transactional
+    @DataSet(value = "incomesForFilterTest.yml", executeScriptsBefore = "reset-id.sql", cleanAfter = true, transactional = true)
+    void getIncomeByYearAndMonthでフィルターできること() throws Exception {
+        int year = 2024;
+        int month = 1;
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/income/filter?year=" + year + "&month=" + month))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        JSONAssert.assertEquals("""
+                [
+                   {
+                      "id":1,
+                      "type":"ACTUAL",
+                      "category":"salary",
+                      "amount":5000,
+                      "usedDate":"2024-01-10",
+                      "createdAt":null,
+                      "updatedAt":null
+                   },
+                   {
+                      "id":2,
+                      "type":"PROJECTED",
+                      "category":"salary",
+                      "amount":250000,
+                      "usedDate":"2024-01-10",
+                      "createdAt":null,
+                      "updatedAt":null
+                   }
+                ]
+                """, response, JSONCompareMode.STRICT);
+    }
+
+
 }
