@@ -58,6 +58,13 @@ public class IncomeController {
         incomeService.deleteIncome(id);
         return ResponseEntity.ok(Map.of("message", "Income deleted successfully"));
     }
+
+    @GetMapping("/income/filter")
+    public List<Income> getIncomeByYearAndMonth(
+            @RequestParam int year,
+            @RequestParam int month) {
+        return incomeService.getIncomeByYearAndMonth(year, month);
+    }
 }
 
 
