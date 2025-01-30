@@ -58,6 +58,13 @@ public class ExpenseController {
         expenseService.deleteExpense(id);
         return ResponseEntity.ok(Map.of("message", "Expense deleted successfully"));
     }
+
+    @GetMapping("/expense/filter")
+    public List<Expense> getExpenseByYearAndMonth(
+            @RequestParam int year,
+            @RequestParam int month) {
+        return expenseService.getExpenseByYearAndMonth(year, month);
+    }
 }
 
 
