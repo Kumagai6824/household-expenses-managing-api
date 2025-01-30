@@ -251,10 +251,28 @@ async function deleteIncome(id) {
 }
 
 // Delete Expense
-function deleteExpense(index) {
-  mockExpenses.splice(index, 1);
-  renderExpenseTable();
-  renderSummary();
+async function deleteExpense(id) {
+  if (!confirm("Are you sure you want to delete income iD " + id + "?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/expense/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP error! Status:" + response.status);
+    }
+
+    console.log("Expense ID " + id + " deleted successfully");
+
+    await renderExpenseTable();
+    await renderSummary();
+  } catch (error) {
+    console.error("Error deleting expense:", error);
+    alert("Failed to delete expense");
+  }
 }
 
 // Initial Render
