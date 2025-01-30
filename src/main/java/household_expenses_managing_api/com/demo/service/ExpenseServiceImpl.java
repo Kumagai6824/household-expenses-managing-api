@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -55,5 +56,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void deleteExpense(int id) {
         expenseMapper.getExpenseById(id).orElseThrow(() -> new ResourceNotFoundException("Expense ID: " + id + " doesn't exist"));
         expenseMapper.deleteExpense(id);
+    }
+
+    @Override
+    public List<Expense> getExpenseByYearAndMonth(int year, int month) {
+        return expenseMapper.getAllExpense().stream()
+                .filter(expense -> expense.getUsedDate().getYear() == year && expense.getUsedDate().getMonthValue() == month)
+                .collect(Collectors.toList());
     }
 }
