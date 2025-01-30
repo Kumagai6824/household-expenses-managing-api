@@ -81,25 +81,33 @@ async function renderExpenseTable() {
 // Function to calculate and render budget summary
 async function renderSummary() {
   try {
-    const response = await fetch("http://localhost:8080/income");
-    if (!response.ok) {
-      throw new Error("HTTP error! Status:" + response.status);
+    const incomeResponse = await fetch("http://localhost:8080/income");
+    if (!incomeResponse.ok) {
+      throw new Error("HTTP error! Status:" + incomeResponse.status);
     }
 
-    const responseData = await response.json();
-    console.log("Response data from backend:", responseData);
+    const incomeResponseData = await incomeResponse.json();
+    console.log("Response data from backend:", incomeResponseData);
 
-    const incomeData = Array.isArray(responseData)
-      ? responseData
-      : responseData.data;
+    const incomeData = Array.isArray(incomeResponseData)
+      ? incomeResponseData
+      : incomeResponseData.data;
 
     if (!Array.isArray(incomeData)) {
       throw new Error("Invalid data format: Expected an array");
     }
 
-    const expenseData = Array.isArray(responseData)
-      ? responseData
-      : responseData.data;
+    const expenseResponse = await fetch("http://localhost:8080/expense");
+    if (!expenseResponse.ok) {
+      throw new Error("HTTP error! Status:" + expenseResponse.status);
+    }
+
+    const expenseResponseData = await expenseResponse.json();
+    console.log("Response data from backend:", expenseResponseData);
+
+    const expenseData = Array.isArray(expenseResponseData)
+      ? expenseResponseData
+      : expenseResponseData.data;
 
     if (!Array.isArray(expenseData)) {
       throw new Error("Invalid data format: Expected an array");
@@ -182,18 +190,36 @@ document
 // Add Expense
 document
   .querySelector("#expense-form")
-  .addEventListener("submit", function (e) {
+  .addEventListener("submit", async function (e) {
     e.preventDefault();
     const type = document.querySelector("#expense-type").value;
     const category = document.querySelector("#expense-category").value;
     const amount = parseFloat(document.querySelector("#expense-amount").value);
-    const date = document.querySelector("#expense-date").value;
+    const usedDate = document.querySelector("#expense-date").value;
 
-    if (type && category && amount && date) {
-      mockExpenses.push({ type, category, amount, date });
-      renderExpenseTable();
-      renderSummary();
-      this.reset();
+    if (type && category && amount && usedDate) {
+      const newExpense = { type, category, amount, usedDate };
+      try {
+        const response = await fetch("http://localhost:8080/expense", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newExpense),
+        });
+
+        if (!response.ok) {
+          throw new Error("HTTP error! Status: " + response.status);
+        }
+
+        console.log("Expense added successfully");
+        await renderExpenseTable();
+        await renderSummary();
+        this.reset();
+      } catch (error) {
+        console.error("Error adding expense: ", error);
+        alert("Failed to add income!");
+      }
     } else {
       alert("Please fill out all fields!");
     }
