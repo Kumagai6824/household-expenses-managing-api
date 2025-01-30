@@ -106,4 +106,19 @@ class ExpenseServiceImplTest {
                 .hasMessage("Expense ID: " + id + " doesn't exist");
     }
 
+    @Test
+    public void getExpenseByYearAndMonthでフィルターできること() {
+        int year = 2024;
+        int month = 1;
+
+        List<Expense> expenses = List.of(new Expense(1, Expense.Type.ACTUAL, "food", 5000, LocalDate.of(2024, 1, 10), null, null), new Expense(2, Expense.Type.PROJECTED, "rent", 200000, LocalDate.of(2024, 1, 25), null, null), new Expense(3, Expense.Type.PROJECTED, "rent", 100000, LocalDate.of(2024, 2, 10), null, null));
+        doReturn(expenses).when(expenseMapper).getAllExpense();
+
+        List<Expense> expectedExpense = List.of(new Expense(1, Expense.Type.ACTUAL, "food", 5000, LocalDate.of(2024, 1, 10), null, null), new Expense(2, Expense.Type.PROJECTED, "rent", 200000, LocalDate.of(2024, 1, 25), null, null));
+
+        List<Expense> actualExpenses = expenseServiceImpl.getExpenseByYearAndMonth(year, month);
+        verify(expenseMapper, times(1)).getAllExpense();
+        assertThat(actualExpenses).isEqualTo(expectedExpense);
+    }
+
 }
