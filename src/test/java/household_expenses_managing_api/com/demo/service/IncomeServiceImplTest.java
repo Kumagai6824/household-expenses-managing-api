@@ -106,4 +106,19 @@ class IncomeServiceImplTest {
                 .hasMessage("Income ID: " + id + " doesn't exist");
     }
 
+    @Test
+    public void getIncomeByYearAndMonthでフィルターできること() {
+        int year = 2024;
+        int month = 1;
+
+        List<Income> incomes = List.of(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null), new Income(2, Income.Type.PROJECTED, "Bonus", 200000, LocalDate.of(2024, 1, 25), null, null), new Income(3, Income.Type.PROJECTED, "Salary", 100000, LocalDate.of(2024, 2, 10), null, null));
+        doReturn(incomes).when(incomeMapper).getAllIncome();
+
+        List<Income> expectedIncomes = List.of(new Income(1, Income.Type.ACTUAL, "salary", 5000, LocalDate.of(2024, 1, 10), null, null), new Income(2, Income.Type.PROJECTED, "Bonus", 200000, LocalDate.of(2024, 1, 25), null, null));
+
+        List<Income> actualIncomes = incomeServiceImpl.getIncomeByYearAndMonth(year, month);
+        verify(incomeMapper, times(1)).getAllIncome();
+        assertThat(actualIncomes).isEqualTo(expectedIncomes);
+    }
+
 }
