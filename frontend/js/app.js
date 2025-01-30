@@ -97,17 +97,25 @@ async function renderSummary() {
       throw new Error("Invalid data format: Expected an array");
     }
 
+    const expenseData = Array.isArray(responseData)
+      ? responseData
+      : responseData.data;
+
+    if (!Array.isArray(expenseData)) {
+      throw new Error("Invalid data format: Expected an array");
+    }
+
     const totalProjectedIncome = incomeData
       .filter((item) => item.type.toLowerCase() === "projected")
       .reduce((sum, item) => sum + item.amount, 0);
     const totalActualIncome = incomeData
       .filter((item) => item.type.toLowerCase() === "actual")
       .reduce((sum, item) => sum + item.amount, 0);
-    const totalProjectedExpenses = mockExpenses
-      .filter((item) => item.type === "projected")
+    const totalProjectedExpenses = expenseData
+      .filter((item) => item.type.toLowerCase() === "projected")
       .reduce((sum, item) => sum + item.amount, 0);
-    const totalActualExpenses = mockExpenses
-      .filter((item) => item.type === "actual")
+    const totalActualExpenses = expenseData
+      .filter((item) => item.type.toLowerCase() === "actual")
       .reduce((sum, item) => sum + item.amount, 0);
 
     const tableBody = document.querySelector("#summary-table tbody");
