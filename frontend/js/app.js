@@ -2,27 +2,63 @@
 const mockIncome = [];
 const mockExpenses = [];
 
-// Function to render income table
-async function renderIncomeTable() {
-  const tableBody = document.querySelector("#income-table tbody");
-  tableBody.innerHTML = ""; // Clear the table first
+async function filterData() {
+  const year = document.getElementById("year").value;
+  const month = document.getElementById("month").value;
 
   try {
-    // Fetch income data from the backend
-    const response = await fetch("http://localhost:8080/income");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    const incomeResponse = await fetch(
+      `http://localhost:8080/income/filter?year=${year}&month=${month}`
+    );
+    if (!incomeResponse.ok) {
+      throw new Error("HTTP error! Status:" + incomeResponse.status);
+    }
+    let incomeData = await incomeResponse.json();
+    incomeData = Array.isArray(incomeData) ? incomeData : incomeData.data;
+
+    const expenseResponse = await fetch(
+      `http://localhost:8080/expense?year=${year}&month=${month}`
+    );
+    if (!expenseResponse.ok) {
+      throw new Error("HTTP error! Status:" + expenseResponse.status);
+    }
+    let expenseData = await expenseResponse.json();
+    expenseData = Array.isArray(expenseData) ? expenseData : expenseData.data;
+
+    console.log("Filtered Income:", incomeData);
+    console.log("Filtered Expenses:", expenseData);
+
+    renderIncomeTable(incomeData);
+    renderExpenseTable(expenseData);
+  } catch (error) {
+    console.error("Error fetching filtered data:", error);
+  }
+}
+
+// Function to render income table
+async function renderIncomeTable(incomeData = null) {
+  const tableBody = document.querySelector("#income-table tbody");
+  tableBody.innerHTML = ""; // Clear the table
+
+  try {
+    // If incomeData is not provided, fetch all income records (for first page load)
+    if (!incomeData) {
+      const response = await fetch("http://localhost:8080/income");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      incomeData = await response.json();
     }
 
-    const responseData = await response.json();
-    console.log("Response data:", responseData); // Debug the raw response
+    console.log("Income Data:", incomeData);
 
-    // Check if the response is an array or wrapped in an object
-    const incomeData = Array.isArray(responseData)
-      ? responseData
-      : responseData.data;
+    incomeData = Array.isArray(incomeData) ? incomeData : incomeData.data;
 
-    // Populate the table with backend data
+    if (!Array.isArray(incomeData)) {
+      throw new Error("Invalid data format: Expected an array");
+    }
+
+    // Populate the table with data
     incomeData.forEach((income) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -275,7 +311,9 @@ async function deleteExpense(id) {
   }
 }
 
-// Initial Render
-renderIncomeTable();
-renderExpenseTable();
-renderSummary();
+// Load all income & expenses when the page loads
+window.onload = function () {
+  renderIncomeTable(); // Loads all income
+  renderExpenseTable(); // Loads all expenses
+  renderSummary();
+};
