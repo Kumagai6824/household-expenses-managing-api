@@ -14,4 +14,6 @@ public interface IncomeService {
     Income getIncomeById(int id);
 
     void deleteIncome(int id);
+
+    List<Income> getIncomeByYearAndMonth(int year, int month);
 }

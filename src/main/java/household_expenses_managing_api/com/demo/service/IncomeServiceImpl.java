@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class IncomeServiceImpl implements IncomeService {
@@ -55,5 +56,12 @@ public class IncomeServiceImpl implements IncomeService {
     public void deleteIncome(int id) {
         incomeMapper.getIncomeById(id).orElseThrow(() -> new ResourceNotFoundException("Income ID: " + id + " doesn't exist"));
         incomeMapper.deleteIncome(id);
+    }
+
+    @Override
+    public List<Income> getIncomeByYearAndMonth(int year, int month) {
+        return incomeMapper.getAllIncome().stream()
+                .filter(income -> income.getUsedDate().getYear() == year && income.getUsedDate().getMonthValue() == month)
+                .collect(Collectors.toList());
     }
 }
