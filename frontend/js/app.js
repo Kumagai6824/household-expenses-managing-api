@@ -17,7 +17,7 @@ async function filterData() {
     incomeData = Array.isArray(incomeData) ? incomeData : incomeData.data;
 
     const expenseResponse = await fetch(
-      `http://localhost:8080/expense?year=${year}&month=${month}`
+      `http://localhost:8080/expense/filter?year=${year}&month=${month}`
     );
     if (!expenseResponse.ok) {
       throw new Error("HTTP error! Status:" + expenseResponse.status);
@@ -79,21 +79,26 @@ async function renderIncomeTable(incomeData = null) {
 }
 
 // Function to render expense table
-async function renderExpenseTable() {
+async function renderExpenseTable(expenseData = null) {
   const tableBody = document.querySelector("#expense-table tbody");
   tableBody.innerHTML = "";
 
   try {
-    const response = await fetch("http://localhost:8080/expense");
-    if (!response.ok) {
-      throw new Error("HTTP error! Status:" + response.status);
+    if (!expenseData) {
+      const response = await fetch("http://localhost:8080/expense");
+      if (!response.ok) {
+        throw new Error("HTTP error! Status:" + response.status);
+      }
+      expenseData = await response.json();
     }
-    const responseData = await response.json();
-    console.log("Response data:", responseData);
 
-    const expenseData = Array.isArray(responseData)
-      ? responseData
-      : responseData.data;
+    console.log("Expense data:", expenseData);
+
+    expenseData = Array.isArray(expenseData) ? expenseData : expenseData.data;
+
+    if (!Array.isArray(expenseData)) {
+      throw new Error("Invalid data format: Expected an array");
+    }
 
     expenseData.forEach((expense) => {
       const row = document.createElement("tr");
