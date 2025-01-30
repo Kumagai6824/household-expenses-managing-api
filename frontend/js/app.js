@@ -30,6 +30,7 @@ async function filterData() {
 
     renderIncomeTable(incomeData);
     renderExpenseTable(expenseData);
+    renderSummary(year, month);
   } catch (error) {
     console.error("Error fetching filtered data:", error);
   }
@@ -120,39 +121,31 @@ async function renderExpenseTable(expenseData = null) {
 }
 
 // Function to calculate and render budget summary
-async function renderSummary() {
+async function renderSummary(year = null, month = null) {
   try {
-    const incomeResponse = await fetch("http://localhost:8080/income");
+    let incomeUrl = "http://localhost:8080/income";
+    let expenseUrl = "http://localhost:8080/expense";
+
+    if (year && month) {
+      incomeUrl += "/filter?year=" + year + "&month=" + month;
+      expenseUrl += "/filter?year=" + year + "&month=" + month;
+    }
+
+    const incomeResponse = await fetch(incomeUrl);
     if (!incomeResponse.ok) {
       throw new Error("HTTP error! Status:" + incomeResponse.status);
     }
 
-    const incomeResponseData = await incomeResponse.json();
-    console.log("Response data from backend:", incomeResponseData);
+    let incomeData = await incomeResponse.json();
+    incomeData = Array.isArray(incomeData) ? incomeData : incomeData.data;
 
-    const incomeData = Array.isArray(incomeResponseData)
-      ? incomeResponseData
-      : incomeResponseData.data;
-
-    if (!Array.isArray(incomeData)) {
-      throw new Error("Invalid data format: Expected an array");
-    }
-
-    const expenseResponse = await fetch("http://localhost:8080/expense");
+    const expenseResponse = await fetch(expenseUrl);
     if (!expenseResponse.ok) {
       throw new Error("HTTP error! Status:" + expenseResponse.status);
     }
 
-    const expenseResponseData = await expenseResponse.json();
-    console.log("Response data from backend:", expenseResponseData);
-
-    const expenseData = Array.isArray(expenseResponseData)
-      ? expenseResponseData
-      : expenseResponseData.data;
-
-    if (!Array.isArray(expenseData)) {
-      throw new Error("Invalid data format: Expected an array");
-    }
+    let expenseData = await expenseResponse.json();
+    expenseData = Array.isArray(expenseData) ? expenseData : expenseData.data;
 
     const totalProjectedIncome = incomeData
       .filter((item) => item.type.toLowerCase() === "projected")
