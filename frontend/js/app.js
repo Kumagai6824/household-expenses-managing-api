@@ -1,6 +1,4 @@
-// Mock data for income and expenses
-const mockIncome = [];
-const mockExpenses = [];
+const backendUrl = "http://192.168.10.8:8080";
 
 async function filterData() {
   const year = document.getElementById("year").value;
@@ -8,7 +6,7 @@ async function filterData() {
 
   try {
     const incomeResponse = await fetch(
-      `http://localhost:8080/income/filter?year=${year}&month=${month}`
+      `${backendUrl}/income/filter?year=${year}&month=${month}`
     );
     if (!incomeResponse.ok) {
       throw new Error("HTTP error! Status:" + incomeResponse.status);
@@ -17,7 +15,7 @@ async function filterData() {
     incomeData = Array.isArray(incomeData) ? incomeData : incomeData.data;
 
     const expenseResponse = await fetch(
-      `http://localhost:8080/expense/filter?year=${year}&month=${month}`
+      `${backendUrl}/expense/filter?year=${year}&month=${month}`
     );
     if (!expenseResponse.ok) {
       throw new Error("HTTP error! Status:" + expenseResponse.status);
@@ -44,7 +42,7 @@ async function renderIncomeTable(incomeData = null) {
   try {
     // If incomeData is not provided, fetch all income records (for first page load)
     if (!incomeData) {
-      const response = await fetch("http://localhost:8080/income");
+      const response = await fetch(backendUrl + "/income");
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -86,7 +84,7 @@ async function renderExpenseTable(expenseData = null) {
 
   try {
     if (!expenseData) {
-      const response = await fetch("http://localhost:8080/expense");
+      const response = await fetch(backendUrl + "/expense");
       if (!response.ok) {
         throw new Error("HTTP error! Status:" + response.status);
       }
@@ -123,8 +121,8 @@ async function renderExpenseTable(expenseData = null) {
 // Function to calculate and render budget summary
 async function renderSummary(year = null, month = null) {
   try {
-    let incomeUrl = "http://localhost:8080/income";
-    let expenseUrl = "http://localhost:8080/expense";
+    let incomeUrl = backendUrl + "/income";
+    let expenseUrl = backendUrl + "/expense";
 
     if (year && month) {
       incomeUrl += "/filter?year=" + year + "&month=" + month;
@@ -196,7 +194,7 @@ document
     if (type && category && amount && usedDate) {
       const newIncome = { type, category, amount, usedDate };
       try {
-        const response = await fetch("http://localhost:8080/income", {
+        const response = await fetch(backendUrl + "/income", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -234,7 +232,7 @@ document
     if (type && category && amount && usedDate) {
       const newExpense = { type, category, amount, usedDate };
       try {
-        const response = await fetch("http://localhost:8080/expense", {
+        const response = await fetch(backendUrl + "/expense", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -266,7 +264,7 @@ async function deleteIncome(id) {
   }
 
   try {
-    const response = await fetch(`http://localhost:8080/income/${id}`, {
+    const response = await fetch(`${backendUrl}/income/${id}`, {
       method: "DELETE",
     });
 
@@ -291,7 +289,7 @@ async function deleteExpense(id) {
   }
 
   try {
-    const response = await fetch(`http://localhost:8080/expense/${id}`, {
+    const response = await fetch(`${backendUrl}/expense/${id}`, {
       method: "DELETE",
     });
 
