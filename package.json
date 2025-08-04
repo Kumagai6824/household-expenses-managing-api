@@ -8,7 +8,9 @@
     "lint": "eslint js",
     "lint:fix": "eslint js --fix",
     "format:write": "npx prettier . --write",
-    "format:check": "npx prettier . --check"
+    "format:check": "npx prettier . --check",
+    "build:dev": "webpack",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",

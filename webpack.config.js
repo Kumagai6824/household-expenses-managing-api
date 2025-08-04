@@ -4,4 +4,6 @@ module.exports = {
     path: `${__dirname}/dist/`,
     filename: "bundle.js",
   },
+  mode: "development",
+  devtool: "source-map",
 };
