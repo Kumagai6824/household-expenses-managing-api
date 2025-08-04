@@ -3,34 +3,34 @@ expense:
     type: ACTUAL
     category: "food"
     amount: 5000
-    used_date: '2024-1-10'
+    used_date: "2024-1-10"
     created_at: null
     updated_at: null
   - id: 2
     type: PROJECTED
     category: "rent"
     amount: 250000
-    used_date: '2024-1-10'
+    used_date: "2024-1-10"
     created_at: null
     updated_at: null
   - id: 3
     type: PROJECTED
     category: "rent"
     amount: 200000
-    used_date: '2024-2-10'
+    used_date: "2024-2-10"
     created_at: null
     updated_at: null
   - id: 4
     type: ACTUAL
     category: "rent"
     amount: 300000
-    used_date: '2024-2-10'
+    used_date: "2024-2-10"
     created_at: null
     updated_at: null
   - id: 5
     type: PROJECTED
     category: "Test"
     amount: 55555
-    used_date: '2025-1-10'
+    used_date: "2025-1-10"
     created_at: null
     updated_at: null

@@ -3,6 +3,6 @@ expense:
     type: ACTUAL
     category: "food"
     amount: 7000
-    used_date: '2025-1-10'
+    used_date: "2025-1-10"
     created_at: null
     updated_at: null

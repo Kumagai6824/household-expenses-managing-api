@@ -6,7 +6,7 @@ async function filterData() {
 
   try {
     const incomeResponse = await fetch(
-      `${backendUrl}/income/filter?year=${year}&month=${month}`
+      `${backendUrl}/income/filter?year=${year}&month=${month}`,
     );
     if (!incomeResponse.ok) {
       throw new Error("HTTP error! Status:" + incomeResponse.status);
@@ -15,7 +15,7 @@ async function filterData() {
     incomeData = Array.isArray(incomeData) ? incomeData : incomeData.data;
 
     const expenseResponse = await fetch(
-      `${backendUrl}/expense/filter?year=${year}&month=${month}`
+      `${backendUrl}/expense/filter?year=${year}&month=${month}`,
     );
     if (!expenseResponse.ok) {
       throw new Error("HTTP error! Status:" + expenseResponse.status);

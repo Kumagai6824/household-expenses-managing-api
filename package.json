@@ -1,0 +1,28 @@
+{
+  "name": "household-expenses-managing-api",
+  "version": "1.0.0",
+  "description": "expenses managing app",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint js",
+    "lint:fix": "eslint js --fix",
+    "format:write": "npx prettier . --write",
+    "format:check": "npx prettier . --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kumagai6824/household-expenses-managing-api.git"
+  },
+  "author": "shinichiro-kumagai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kumagai6824/household-expenses-managing-api/issues"
+  },
+  "homepage": "https://github.com/Kumagai6824/household-expenses-managing-api#readme",
+  "devDependencies": {
+    "@eslint/js": "9.32.0",
+    "eslint": "9.32.0",
+    "prettier": "3.6.2"
+  }
+}
