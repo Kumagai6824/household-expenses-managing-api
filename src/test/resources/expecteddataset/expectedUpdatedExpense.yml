@@ -3,6 +3,6 @@ expense:
     type: PROJECTED
     category: "Updated food"
     amount: 55555
-    used_date: '2025-10-11'
+    used_date: "2025-10-11"
     created_at: null
     updated_at: null
