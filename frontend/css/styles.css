@@ -1,74 +1,81 @@
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
 }
 
+/* ナビゲーション */
 header {
-  text-align: center;
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 0;
+  background-color: white;
+  padding: 1rem;
 }
-
-section {
-  margin: 20px 0;
-}
-
-form {
+.nav-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links li {
+  margin-left: 1.5rem;
+}
+.nav-links a {
+  color: #3a3a3a;
+  text-decoration: none;
+  font-weight: bold;
+}
+.nav-links a:hover {
+  text-decoration: underline;
 }
 
-form label {
-  flex-basis: 100px;
+/* メイン */
+main {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-form input,
-form select,
-form button {
-  flex-grow: 1;
+h1 {
+  text-align: center;
+  color: #3a3a3a;
 }
 
+/* テーブル */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  margin: 1.5rem 0;
 }
-
-table,
 th,
 td {
-  border: 1px solid #ddd;
-}
-
-th,
-td {
-  padding: 8px;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
   text-align: center;
 }
+th {
+  background-color: white;
+  color: 3a3a3a;
+}
 
+/* ボタン */
 button {
-  background-color: #4caf50;
-  color: white;
+  display: block;
+  margin: 1rem auto;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  color: #fe6d30;
   border: none;
-  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
-
 button:hover {
-  background-color: #45a049;
-}
-section {
-  margin: 20px 0;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-h2 {
-  margin-bottom: 10px;
-  color: #333;
+  background-color: #fe6d30;
+  color: white;
 }
