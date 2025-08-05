@@ -1,3 +1,5 @@
+import "../css/styles.css";
+
 const backendUrl = "http://192.168.10.8:8080";
 
 async function filterData() {
