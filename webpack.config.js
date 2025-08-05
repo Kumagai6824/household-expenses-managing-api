@@ -1,3 +1,5 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
   entry: "./frontend/js/app.js",
   output: {
@@ -14,4 +16,10 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      //テンプレートに使用するhtmlファイルを指定
+      template: "./frontend/index.html",
+    }),
+  ],
 };
