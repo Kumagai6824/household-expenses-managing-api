@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: "./frontend/js/app.js",
@@ -12,7 +13,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
@@ -21,5 +22,6 @@ module.exports = {
       //テンプレートに使用するhtmlファイルを指定
       template: "./frontend/index.html",
     }),
+    new MiniCssExtractPlugin(),
   ],
 };
