@@ -10,43 +10,31 @@
     <header>
       <nav>
         <ul class="nav-links">
-          <li><a href="#">Yearly</a></li>
-          <li><a href="#">Monthly</a></li>
+          <li><a href="#" onclick="loadSummary('yearly')">Yearly</a></li>
+          <li><a href="#" onclick="loadSummary('monthly')">Monthly</a></li>
           <li><a href="#">SEARCH</a></li>
           <li><a href="#">Home</a></li>
         </ul>
       </nav>
     </header>
-    <main id="app">
-      <section id="filter-section">
-        <h1>Summary</h1>
-        <table id="summary-table">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Expense</th>
-              <th>Income</th>
-              <th>Savings</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>2025</td>
-              <td>5000</td>
-              <td>5000</td>
-              <td>5000</td>
-            </tr>
-            <tr>
-              <td>2024</td>
-              <td>5000</td>
-              <td>5000</td>
-              <td>5000</td>
-            </tr>
-          </tbody>
-        </table>
+    <main>
+      <h1>Summary</h1>
+      <table id="summary-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Expense</th>
+            <th>Income</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JSで動的に埋め込む -->
+        </tbody>
+      </table>
 
-        <!-- 年追加ボタン -->
-        <button id="add-year">Add Year</button>
+      <!-- 年追加ボタン -->
+      <button id="add-year">Add Year</button>
     </main>
 
     <script src="./js/app.js"></script>
