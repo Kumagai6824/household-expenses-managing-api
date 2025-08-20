@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { Resolver } = require("webpack");
 
 module.exports = {
-  entry: "./frontend/js/app.js",
+  entry: "./frontend/js/app.ts",
   output: {
     path: `${__dirname}/dist/`,
     filename: "bundle.js",
@@ -38,6 +38,6 @@ module.exports = {
   ],
   resolve: {
     //拡張子を配列で指定
-    extentions: [".ts", ".js"],
+    extensions: [".ts", ".js"],
   },
 };
