@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { Resolver } = require("webpack");
 
 module.exports = {
-  entry: "./frontend/js/app.ts",
+  entry: "./frontend/src/js/app.ts",
   output: {
     path: `${__dirname}/dist/`,
     filename: "bundle.js",
@@ -32,7 +32,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       //テンプレートに使用するhtmlファイルを指定
-      template: "./frontend/index.html",
+      template: "./frontend/src/index.html",
     }),
     new MiniCssExtractPlugin(),
   ],
