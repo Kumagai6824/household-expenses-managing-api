@@ -120,3 +120,7 @@ window.onload = renderTable;
 // グローバルに関数をバインド（onclick用）
 (window as any).openMonth = openMonth;
 (window as any).addMonth = addMonth;
+
+//test
+let testText: string = "This is test!";
+console.log(testText);

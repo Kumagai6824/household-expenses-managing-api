@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Family Budget Manager</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  <script defer src="bundle.js"></script><link href="main.css" rel="stylesheet"></head>
+  <body>
+    <header>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" onclick="loadSummary('yearly')">Yearly</a></li>
+          <li><a href="#" onclick="loadSummary('monthly')">Monthly</a></li>
+          <li><a href="#">SEARCH</a></li>
+          <li><a href="#">Home</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>Summary</h1>
+      <table id="summary-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Expense</th>
+            <th>Income</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JSで動的に埋め込む -->
+        </tbody>
+      </table>
+
+      <!-- 年追加ボタン -->
+      <button id="add-year">Add Year</button>
+    </main>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
